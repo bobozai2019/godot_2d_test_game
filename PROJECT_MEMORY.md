@@ -8,7 +8,8 @@ This file records project-specific operating conventions. Load and follow it at 
 2. If there are uncommitted local changes before the task starts, commit them first.
 3. Plan every task before implementation.
 4. Write the plan result under `doc/` before executing the task.
-5. Keep task plans concise and named clearly, for example `doc/2026-04-11-project-conventions-plan.md`.
+5. Write all task plans in Chinese and save them locally under `doc/`.
+6. Keep task plans concise and named clearly, for example `doc/2026-04-11-项目约定计划.md`.
 
 ## Notes
 
