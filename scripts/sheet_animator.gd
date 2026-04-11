@@ -1,3 +1,4 @@
+@tool
 class_name SheetAnimator
 extends Sprite2D
 
@@ -16,6 +17,19 @@ const FRAME_SIZE := Vector2i(64, 64)
 	"death": 7,
 }
 @export var fps := 10.0
+@export_group("Editor Preview")
+@export var enable_editor_preview := true:
+	set(value):
+		enable_editor_preview = value
+		_refresh_editor_preview()
+@export_enum("run", "attack", "hurt", "death") var preview_animation := "run":
+	set(value):
+		preview_animation = value
+		_refresh_editor_preview(true)
+@export_enum("上", "下", "左", "右") var preview_direction := 1:
+	set(value):
+		preview_direction = value
+		_refresh_editor_preview(true)
 
 var current_animation := ""
 var current_direction := Vector2.DOWN
@@ -27,10 +41,17 @@ var _loop := true
 
 func _ready() -> void:
 	region_enabled = true
+	if Engine.is_editor_hint():
+		_refresh_editor_preview(true)
+		return
+
 	play_animation("idle", Vector2.DOWN)
 
 
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint() and not enable_editor_preview:
+		return
+
 	if is_finished:
 		return
 
@@ -94,3 +115,27 @@ func _get_texture(animation_name: String) -> Texture2D:
 
 func _get_frame_count(animation_name: String) -> int:
 	return int(frames.get(animation_name, 1))
+
+
+func _refresh_editor_preview(reset_frame := false) -> void:
+	if not Engine.is_editor_hint() or not enable_editor_preview:
+		return
+
+	region_enabled = true
+	play_animation(preview_animation, _preview_direction_to_vector(), true, true)
+	if reset_frame:
+		current_frame = 0
+		_elapsed = 0.0
+		_apply_region()
+
+
+func _preview_direction_to_vector() -> Vector2:
+	match preview_direction:
+		0:
+			return Vector2.UP
+		2:
+			return Vector2.LEFT
+		3:
+			return Vector2.RIGHT
+		_:
+			return Vector2.DOWN
