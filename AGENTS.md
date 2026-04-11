@@ -49,3 +49,7 @@ This checkout does not include local git history, so no existing commit conventi
 ## Security & Configuration Tips
 
 Do not commit machine-specific editor caches from `.godot/`. Preserve third-party asset license files in `resources/`, and document any new asset source when adding packs.
+
+## Agent-Specific Instructions
+
+At the start of each session, read and follow `PROJECT_MEMORY.md` in the repository root. Before starting any task, check Git status and commit any pre-existing local changes. Plan every task first and write the plan under `doc/` before implementation.
