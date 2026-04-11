@@ -75,7 +75,7 @@ func _apply_region() -> void:
 func _direction_to_row(direction: Vector2) -> int:
 	if absf(direction.x) > absf(direction.y):
 		return 2 if direction.x < 0.0 else 3
-	return 1 if direction.y < 0.0 else 0
+	return 0 if direction.y < 0.0 else 1
 
 
 func _get_texture(animation_name: String) -> Texture2D:
@@ -94,4 +94,3 @@ func _get_texture(animation_name: String) -> Texture2D:
 
 func _get_frame_count(animation_name: String) -> int:
 	return int(frames.get(animation_name, 1))
-
