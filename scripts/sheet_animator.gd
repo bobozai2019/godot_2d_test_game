@@ -17,6 +17,23 @@ const FRAME_SIZE := Vector2i(64, 64)
 	"death": 7,
 }
 @export var fps := 10.0
+@export_group("Direction Rows")
+@export_range(0, 16, 1, "or_greater") var up_row := 0:
+	set(value):
+		up_row = value
+		_refresh_editor_preview()
+@export_range(0, 16, 1, "or_greater") var down_row := 1:
+	set(value):
+		down_row = value
+		_refresh_editor_preview()
+@export_range(0, 16, 1, "or_greater") var left_row := 2:
+	set(value):
+		left_row = value
+		_refresh_editor_preview()
+@export_range(0, 16, 1, "or_greater") var right_row := 3:
+	set(value):
+		right_row = value
+		_refresh_editor_preview()
 @export_group("Editor Preview")
 @export var enable_editor_preview := true:
 	set(value):
@@ -98,8 +115,8 @@ func _apply_region() -> void:
 
 func _direction_to_row(direction: Vector2) -> int:
 	if absf(direction.x) > absf(direction.y):
-		return 2 if direction.x < 0.0 else 3
-	return 0 if direction.y < 0.0 else 1
+		return left_row if direction.x < 0.0 else right_row
+	return up_row if direction.y < 0.0 else down_row
 
 
 func _get_texture(animation_name: String) -> Texture2D:
