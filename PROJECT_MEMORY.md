@@ -10,6 +10,7 @@ This file records project-specific operating conventions. Load and follow it at 
 4. Write the plan result under `doc/` before executing the task.
 5. Write all task plans in Chinese and save them locally under `doc/`.
 6. Keep task plans concise and named clearly, for example `doc/2026-04-11-项目约定计划.md`.
+7. After creating a Git commit, push the commit to the GitHub remote repository.
 
 ## Notes
 
