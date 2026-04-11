@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/spell_projectile.gd" id="1_projectile"]
+[ext_resource type="Texture2D" path="res://resources/craftpix-net-809047-free-animated-magic-book-pixel-art-asset-pack/PNG/Icons/Icon11_big.png" id="2_icon"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_projectile"]
+radius = 12.0
+
+[node name="SpellProjectile" type="Area2D"]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_projectile")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_projectile")
+

@@ -14,6 +14,9 @@ var _attack_lock := 0.0
 var _hurt_lock := 0.0
 var _is_dead := false
 var _target: Node2D
+var _slow_remaining := 0.0
+var _slow_multiplier := 1.0
+var _knockback_velocity := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -40,8 +43,21 @@ func take_damage(amount: int) -> void:
 	animator.play_animation("hurt", facing_direction, false, true)
 
 
+func apply_slow(multiplier: float, duration: float) -> void:
+	_slow_multiplier = clampf(multiplier, 0.1, 1.0)
+	_slow_remaining = maxf(_slow_remaining, duration)
+
+
+func apply_knockback(force: Vector2) -> void:
+	_knockback_velocity += force
+
+
 func _physics_process(delta: float) -> void:
 	attack_cooldown_remaining = maxf(attack_cooldown_remaining - delta, 0.0)
+	_slow_remaining = maxf(_slow_remaining - delta, 0.0)
+	if _slow_remaining <= 0.0:
+		_slow_multiplier = 1.0
+
 	if _is_dead:
 		return
 	if not is_instance_valid(_target):
@@ -66,10 +82,12 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		_try_attack()
 	else:
-		velocity = facing_direction * stats.move_speed
+		velocity = facing_direction * stats.move_speed * _slow_multiplier
 		if _hurt_lock <= 0.0:
 			animator.play_animation("run", facing_direction)
 
+	velocity += _knockback_velocity
+	_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, 600.0 * delta)
 	move_and_slide()
 
 
@@ -100,4 +118,3 @@ func _die() -> void:
 	died.emit(self)
 	await get_tree().create_timer(0.55).timeout
 	queue_free()
-

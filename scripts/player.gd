@@ -4,6 +4,8 @@ signal health_changed(current_health: int, max_health: int)
 signal died
 
 @export var stats: CombatStats
+@export var skill_1_scene: PackedScene
+@export var skill_2_scene: PackedScene
 
 @onready var animator: SheetAnimator = $Sprite2D
 @onready var attack_area: Area2D = $AttackArea
@@ -32,10 +34,10 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("attack"):
 		_try_attack()
-	if Input.is_action_just_pressed("skill_1") and skill_1_remaining <= 0.0:
-		skill_1_remaining = stats.skill_1_cooldown
-	if Input.is_action_just_pressed("skill_2") and skill_2_remaining <= 0.0:
-		skill_2_remaining = stats.skill_2_cooldown
+	if Input.is_action_just_pressed("skill_1"):
+		_try_skill_1()
+	if Input.is_action_just_pressed("skill_2"):
+		_try_skill_2()
 
 	if _hurt_lock > 0.0:
 		_hurt_lock -= delta
@@ -103,6 +105,30 @@ func _try_attack() -> void:
 		if to_enemy.normalized().dot(facing_direction) < -0.2:
 			continue
 		enemy.take_damage(stats.attack_damage)
+
+
+func _try_skill_1() -> void:
+	if skill_1_remaining > 0.0 or skill_1_scene == null:
+		return
+
+	skill_1_remaining = stats.skill_1_cooldown
+	var projectile := skill_1_scene.instantiate()
+	get_parent().add_child(projectile)
+	if projectile.has_method("setup"):
+		projectile.setup(global_position + facing_direction * 32.0, facing_direction)
+	else:
+		projectile.global_position = global_position + facing_direction * 32.0
+
+
+func _try_skill_2() -> void:
+	if skill_2_remaining > 0.0 or skill_2_scene == null:
+		return
+
+	skill_2_remaining = stats.skill_2_cooldown
+	var burst := skill_2_scene.instantiate()
+	get_parent().add_child(burst)
+	burst.global_position = global_position + facing_direction * 48.0
+	animator.play_animation("attack", facing_direction, false, true)
 
 
 func _tick_cooldowns(delta: float) -> void:

@@ -1,6 +1,7 @@
 extends Node2D
 
 signal wave_changed(current_wave: int, total_waves: int, remaining_enemies: int)
+signal enemy_defeated(total_defeated: int)
 signal all_waves_cleared
 
 @export var enemy_scene: PackedScene
@@ -10,6 +11,7 @@ signal all_waves_cleared
 
 var current_wave := 0
 var remaining_enemies := 0
+var defeated_enemies := 0
 var _target: Node2D
 
 
@@ -20,6 +22,7 @@ func _ready() -> void:
 
 func start() -> void:
 	current_wave = 0
+	defeated_enemies = 0
 	_spawn_next_wave()
 
 
@@ -43,6 +46,8 @@ func _spawn_next_wave() -> void:
 
 func _on_enemy_died(_enemy: Node) -> void:
 	remaining_enemies = maxi(remaining_enemies - 1, 0)
+	defeated_enemies += 1
+	enemy_defeated.emit(defeated_enemies)
 	wave_changed.emit(current_wave, wave_sizes.size(), remaining_enemies)
 	if remaining_enemies <= 0:
 		_spawn_next_wave()

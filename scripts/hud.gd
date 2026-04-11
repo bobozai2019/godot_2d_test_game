@@ -3,7 +3,16 @@ extends CanvasLayer
 @onready var health_label: Label = $Root/StatusPanel/MarginContainer/VBoxContainer/HealthLabel
 @onready var skill_label: Label = $Root/StatusPanel/MarginContainer/VBoxContainer/SkillLabel
 @onready var wave_label: Label = $Root/StatusPanel/MarginContainer/VBoxContainer/WaveLabel
-@onready var result_label: Label = $Root/ResultLabel
+@onready var objective_label: Label = $Root/StatusPanel/MarginContainer/VBoxContainer/ObjectiveLabel
+@onready var pause_panel: PanelContainer = $Root/PausePanel
+@onready var result_panel: PanelContainer = $Root/ResultPanel
+@onready var result_label: Label = $Root/ResultPanel/MarginContainer/VBoxContainer/ResultLabel
+@onready var summary_label: Label = $Root/ResultPanel/MarginContainer/VBoxContainer/SummaryLabel
+
+
+func _ready() -> void:
+	set_pause_visible(false)
+	set_result_visible(false)
 
 
 func set_health(current_health: int, max_health: int) -> void:
@@ -20,6 +29,19 @@ func set_wave(current_wave: int, total_waves: int, remaining_enemies: int) -> vo
 	wave_label.text = "Wave %d / %d | Enemies %d" % [current_wave, total_waves, remaining_enemies]
 
 
-func set_result(text: String) -> void:
-	result_label.text = text
+func set_objective(text: String) -> void:
+	objective_label.text = text
 
+
+func set_pause_visible(is_visible: bool) -> void:
+	pause_panel.visible = is_visible
+
+
+func set_result_visible(is_visible: bool) -> void:
+	result_panel.visible = is_visible
+
+
+func set_result(text: String, defeated_enemies := 0, elapsed_time := 0.0) -> void:
+	result_label.text = text
+	summary_label.text = "Defeated %d | Time %.1fs | Press E to restart" % [defeated_enemies, elapsed_time]
+	set_result_visible(true)
