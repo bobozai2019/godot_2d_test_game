@@ -1,6 +1,13 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=10 format=3]
 
-[ext_resource type="Texture2D" path="res://icon.svg" id="1_icon"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://scripts/sheet_animator.gd" id="2_animator"]
+[ext_resource type="Resource" path="res://assets/slime_stats.tres" id="3_stats"]
+[ext_resource type="Texture2D" path="res://resources/craftpix-net-788364-free-slime-mobs-pixel-art-top-down-sprite-pack/PNG/Slime1/Without_shadow/Slime1_Idle_without_shadow.png" id="4_idle"]
+[ext_resource type="Texture2D" path="res://resources/craftpix-net-788364-free-slime-mobs-pixel-art-top-down-sprite-pack/PNG/Slime1/Without_shadow/Slime1_Run_without_shadow.png" id="5_run"]
+[ext_resource type="Texture2D" path="res://resources/craftpix-net-788364-free-slime-mobs-pixel-art-top-down-sprite-pack/PNG/Slime1/Without_shadow/Slime1_Attack_without_shadow.png" id="6_attack"]
+[ext_resource type="Texture2D" path="res://resources/craftpix-net-788364-free-slime-mobs-pixel-art-top-down-sprite-pack/PNG/Slime1/Without_shadow/Slime1_Hurt_without_shadow.png" id="7_hurt"]
+[ext_resource type="Texture2D" path="res://resources/craftpix-net-788364-free-slime-mobs-pixel-art-top-down-sprite-pack/PNG/Slime1/Without_shadow/Slime1_Death_without_shadow.png" id="8_death"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy"]
 radius = 16.0
@@ -8,12 +15,19 @@ radius = 16.0
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 3
+script = ExtResource("1_enemy")
+stats = ExtResource("3_stats")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0.35, 0.28, 1)
-scale = Vector2(0.28, 0.28)
-texture = ExtResource("1_icon")
+scale = Vector2(1.1, 1.1)
+script = ExtResource("2_animator")
+idle_texture = ExtResource("4_idle")
+run_texture = ExtResource("5_run")
+attack_texture = ExtResource("6_attack")
+hurt_texture = ExtResource("7_hurt")
+death_texture = ExtResource("8_death")
+frames = {"attack": 10, "death": 10, "hurt": 5, "idle": 6, "run": 8}
+fps = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_enemy")
-

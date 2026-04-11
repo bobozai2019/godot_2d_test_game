@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CombatStats" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat_stats.gd" id="1_stats"]
+
+[resource]
+script = ExtResource("1_stats")
+max_health = 60
+move_speed = 90.0
+attack_damage = 12
+attack_range = 34.0
+attack_cooldown = 0.9
+skill_1_cooldown = 0.0
+skill_2_cooldown = 0.0
+
