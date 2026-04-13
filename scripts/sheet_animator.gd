@@ -56,7 +56,7 @@ var _elapsed := 0.0
 var _loop := true
 var _preview_frame := 0
 var _preview_elapsed := 0.0
-
+var b_print = false
 
 func _ready() -> void:
 	region_enabled = true
@@ -109,6 +109,9 @@ func play_animation(animation_name: String, direction: Vector2, loop := true, fo
 
 func _apply_region() -> void:
 	var row := _direction_to_row(current_direction)
+	if b_print == true:
+		print("current_direction:"+str(current_direction))
+		print("row:"+str(row))
 	region_rect = Rect2(current_frame * FRAME_SIZE.x, row * FRAME_SIZE.y, FRAME_SIZE.x, FRAME_SIZE.y)
 	flip_h = false
 
@@ -168,7 +171,7 @@ func _process_editor_preview(delta: float) -> void:
 
 
 func _apply_preview_region() -> void:
-	var row := _direction_to_row(_preview_direction_to_vector())
+	var row := _direction_to_row(current_direction)
 	var frame_count := _get_frame_count(preview_animation)
 	var frame := mini(_preview_frame, maxi(frame_count - 1, 0))
 	region_rect = Rect2(frame * FRAME_SIZE.x, row * FRAME_SIZE.y, FRAME_SIZE.x, FRAME_SIZE.y)

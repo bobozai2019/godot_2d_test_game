@@ -8,4 +8,3 @@ extends Resource
 @export var attack_cooldown := 0.45
 @export var skill_1_cooldown := 4.0
 @export var skill_2_cooldown := 8.0
-

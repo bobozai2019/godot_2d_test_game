@@ -11,7 +11,7 @@ signal died
 @onready var attack_area: Area2D = $AttackArea
 
 var current_health := 0
-var facing_direction := Vector2.DOWN
+@export var facing_direction := Vector2.DOWN
 var attack_cooldown_remaining := 0.0
 var skill_1_remaining := 0.0
 var skill_2_remaining := 0.0
@@ -49,10 +49,13 @@ func _physics_process(delta: float) -> void:
 
 	var input_vector := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if input_vector.length_squared() > 0.0:
-		facing_direction = input_vector.normalized()
-		velocity = facing_direction * stats.move_speed
-		if _hurt_lock <= 0.0:
-			animator.play_animation("run", facing_direction)
+		if facing_direction != input_vector.normalized():
+			facing_direction = input_vector.normalized()
+			velocity = facing_direction * stats.move_speed
+			if _hurt_lock <= 0.0:
+				print("facing_direction:"+ str(facing_direction))
+				animator.b_print = true
+				animator.play_animation("run", facing_direction)
 	else:
 		velocity = Vector2.ZERO
 		if _hurt_lock <= 0.0:
@@ -142,6 +145,7 @@ func _update_attack_area() -> void:
 
 
 func _die() -> void:
+	return
 	_is_dead = true
 	velocity = Vector2.ZERO
 	animator.play_animation("death", facing_direction, false, true)

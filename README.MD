@@ -1,0 +1,1 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/bobozai2019/godot_2d_test_game)
